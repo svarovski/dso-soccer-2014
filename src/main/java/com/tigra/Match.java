@@ -1,206 +1,53 @@
 package com.tigra;
 
-import com.google.appengine.repackaged.com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public enum Match {
-    TRAINING(Arrays.asList(
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.FAST_REFLEXES
-    )),
-    MATCH_FIRST(Arrays.asList(
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.HIGH_JUMPER
-    )),
+    TRAINING(ImmutableMap.<Enemy, Integer>builder()
+            .put(Enemy.DIVER, 2)
+            .put(Enemy.DRIBBLE, 3)
+            .put(Enemy.BACK_HEEL, 2)
+            .put(Enemy.MAN_MARKING, 4)
+            .put(Enemy.FAST_REFLEXES, 1)
+            .build()
+    ),
+    MATCH_FIRST(ImmutableMap.<Enemy, Integer>builder()
+            .put(Enemy.DIVER, 3)
+            .put(Enemy.MAN_MARKING, 8)
+            .put(Enemy.FAST_REFLEXES, 1)
+            .put(Enemy.FAST_RUNNER, 5)
+            .put(Enemy.HIGH_JUMPER, 1)
+            .build()
+    ),
     MATCH_LAST(null),
     EIGHT_FINAL(null),
-    FOURTH_FINAL(Arrays.asList(
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER
-    )),
+    FOURTH_FINAL(ImmutableMap.<Enemy, Integer>builder()
+            .put(Enemy.DIVER, 8)
+            .put(Enemy.DRIBBLE, 4)
+            .put(Enemy.BACK_HEEL, 4)
+            .put(Enemy.MAN_MARKING, 8)
+            .put(Enemy.FAST_REFLEXES, 6)
+            .put(Enemy.FAST_RUNNER, 4)
+            .put(Enemy.ZONE_DEFENSE, 12)
+            .put(Enemy.HIGH_JUMPER, 4)
+            .build()
+    ),
     HALF_FINAL(null),
-    FINAL(Arrays.asList(
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DIVER,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.DRIBBLE,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.BACK_HEEL,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.MAN_MARKING,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_REFLEXES,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.FAST_RUNNER,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.ZONE_DEFENSE,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER,
-            Enemy.HIGH_JUMPER
-    ));
+    FINAL(ImmutableMap.<Enemy, Integer>builder()
+            .put(Enemy.DIVER, 10)
+            .put(Enemy.DRIBBLE, 10)
+            .put(Enemy.BACK_HEEL, 22)
+            .put(Enemy.MAN_MARKING, 7)
+            .put(Enemy.FAST_REFLEXES, 10)
+            .put(Enemy.FAST_RUNNER, 18)
+            .put(Enemy.ZONE_DEFENSE, 18)
+            .put(Enemy.HIGH_JUMPER, 8)
+            .build()
+    );
 
 
     public enum Resource {
@@ -251,13 +98,31 @@ public enum Match {
         }
     }
 
-    private final List<Enemy> enemies;
+    public static class Hit {
+        private final Enemy enemy;
+        private final Weakness weakness;
 
-    Match(List<Enemy> enemies) {
+        public Hit(Enemy enemy, Weakness weakness) {
+            this.enemy = enemy;
+            this.weakness = weakness;
+        }
+
+        public Enemy getEnemy() {
+            return enemy;
+        }
+
+        public Weakness getWeakness() {
+            return weakness;
+        }
+    }
+
+    private final Map<Enemy, Integer> enemies;
+
+    Match(Map<Enemy, Integer> enemies) {
         this.enemies = enemies;
     }
 
-    public List<Enemy> getEnemies() {
+    public Map<Enemy, Integer> getEnemies() {
         return enemies;
     }
 }

@@ -70,6 +70,11 @@
             <artifactId>jersey-guice</artifactId>
             <version>1.17.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>14.0</version>
+        </dependency>
 
         <!-- Test Dependencies -->
         <dependency>
