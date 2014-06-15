@@ -149,6 +149,9 @@
                                     </span></td>
                                 </tr>
                             </c:forEach>
+                            <tr>
+                                <td colspan=3><span class="pull-right">${it.solution.shortage}</span></td>
+                            </tr>
                         </table>
                         <div class="margin-top-20">
                             <button id="save_remainder" type="button" class="btn btn-block btn-info">

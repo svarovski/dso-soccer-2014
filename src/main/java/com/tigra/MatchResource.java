@@ -11,7 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +40,7 @@ public class MatchResource {
     public Response match(@PathParam("matchName")String matchName) {
         LOG.log(Level.INFO, "Match requested: " + matchName);
         final Map<Object, Object> model = model("matches", service.matchList());
-        final Match match = service.match(matchName);
+        final Soccer.Match match = service.match(matchName);
         if(match != null && match.getEnemies() != null) {
             model.put("match", match);
             model.put("resources", service.resourceList());
@@ -50,10 +50,10 @@ public class MatchResource {
 
     @POST @Path("{matchName}")
     public Response matchCalc(@PathParam("matchName")String matchName, MultivaluedMap<String,String> form) {
-        LOG.log(Level.INFO, "Match calc requested: " + matchName);
-        final Map<Match.Resource, Integer> condition = formToCondition(form);
+        LOG.log(Level.INFO, "Calc requested for match: " + matchName);
+        final Map<Soccer.Resource, Integer> condition = formToCondition(form);
         final Map<Object, Object> model = model("matches", service.matchList());
-        final Match match = service.match(matchName);
+        final Soccer.Match match = service.match(matchName);
         if(match != null && match.getEnemies() != null) {
             model.put("match", match);
             model.put("condition", condition);
@@ -71,9 +71,9 @@ public class MatchResource {
         return Response.ok(new Viewable("/matches", model)).build();
     }
 
-    private Map<Match.Resource, Integer> formToCondition(MultivaluedMap<String, String> form) {
-        Map<Match.Resource, Integer> condition = new HashMap<Match.Resource, Integer>();
-        for(Match.Resource resource : Match.Resource.values()) {
+    private Map<Soccer.Resource, Integer> formToCondition(MultivaluedMap<String, String> form) {
+        Map<Soccer.Resource, Integer> condition = new LinkedHashMap<Soccer.Resource, Integer>();
+        for(Soccer.Resource resource : Soccer.Resource.values()) {
             final String value = form.getFirst(resource.toString());
             try {
                 condition.put(resource, Integer.parseInt(value));

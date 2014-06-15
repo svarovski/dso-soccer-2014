@@ -6,50 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public enum Match {
-    TRAINING(ImmutableMap.<Enemy, Integer>builder()
-            .put(Enemy.DIVER, 2)
-            .put(Enemy.DRIBBLE, 3)
-            .put(Enemy.BACK_HEEL, 2)
-            .put(Enemy.MAN_MARKING, 4)
-            .put(Enemy.FAST_REFLEXES, 1)
-            .build()
-    ),
-    MATCH_FIRST(ImmutableMap.<Enemy, Integer>builder()
-            .put(Enemy.DIVER, 3)
-            .put(Enemy.MAN_MARKING, 8)
-            .put(Enemy.FAST_REFLEXES, 1)
-            .put(Enemy.FAST_RUNNER, 5)
-            .put(Enemy.HIGH_JUMPER, 1)
-            .build()
-    ),
-    MATCH_LAST(null),
-    EIGHT_FINAL(null),
-    FOURTH_FINAL(ImmutableMap.<Enemy, Integer>builder()
-            .put(Enemy.DIVER, 8)
-            .put(Enemy.DRIBBLE, 4)
-            .put(Enemy.BACK_HEEL, 4)
-            .put(Enemy.MAN_MARKING, 8)
-            .put(Enemy.FAST_REFLEXES, 6)
-            .put(Enemy.FAST_RUNNER, 4)
-            .put(Enemy.ZONE_DEFENSE, 12)
-            .put(Enemy.HIGH_JUMPER, 4)
-            .build()
-    ),
-    HALF_FINAL(null),
-    FINAL(ImmutableMap.<Enemy, Integer>builder()
-            .put(Enemy.DIVER, 10)
-            .put(Enemy.DRIBBLE, 10)
-            .put(Enemy.BACK_HEEL, 22)
-            .put(Enemy.MAN_MARKING, 7)
-            .put(Enemy.FAST_REFLEXES, 10)
-            .put(Enemy.FAST_RUNNER, 18)
-            .put(Enemy.ZONE_DEFENSE, 18)
-            .put(Enemy.HIGH_JUMPER, 8)
-            .build()
-    );
-
-
+public class Soccer {
     public enum Resource {
         BOOTS, BANANA, SHOULDER, THORNS, HELMET, HOOKED_BALL, RED_COLOR, SPYGLASS, WET_GRASS, FIST, GREASE, CORNER, SPRING,
         ADVANCED_PAPER
@@ -98,9 +55,63 @@ public enum Match {
         }
     }
 
+    public enum Match {
+        TRAINING(ImmutableMap.<Enemy, Integer>builder()
+                .put(Enemy.DIVER, 2)
+                .put(Enemy.DRIBBLE, 3)
+                .put(Enemy.BACK_HEEL, 2)
+                .put(Enemy.MAN_MARKING, 4)
+                .put(Enemy.FAST_REFLEXES, 1)
+                .build()
+        ),
+        MATCH_FIRST(ImmutableMap.<Enemy, Integer>builder()
+                .put(Enemy.DIVER, 3)
+                .put(Enemy.MAN_MARKING, 8)
+                .put(Enemy.FAST_REFLEXES, 1)
+                .put(Enemy.FAST_RUNNER, 5)
+                .put(Enemy.HIGH_JUMPER, 1)
+                .build()
+        ),
+        MATCH_LAST(null),
+        EIGHT_FINAL(null),
+        FOURTH_FINAL(ImmutableMap.<Enemy, Integer>builder()
+                .put(Enemy.DIVER, 8)
+                .put(Enemy.DRIBBLE, 4)
+                .put(Enemy.BACK_HEEL, 4)
+                .put(Enemy.MAN_MARKING, 8)
+                .put(Enemy.FAST_REFLEXES, 6)
+                .put(Enemy.FAST_RUNNER, 4)
+                .put(Enemy.ZONE_DEFENSE, 12)
+                .put(Enemy.HIGH_JUMPER, 4)
+                .build()
+        ),
+        HALF_FINAL(null),
+        FINAL(ImmutableMap.<Enemy, Integer>builder()
+                .put(Enemy.DIVER, 10)
+                .put(Enemy.DRIBBLE, 10)
+                .put(Enemy.BACK_HEEL, 22)
+                .put(Enemy.MAN_MARKING, 7)
+                .put(Enemy.FAST_REFLEXES, 10)
+                .put(Enemy.FAST_RUNNER, 18)
+                .put(Enemy.ZONE_DEFENSE, 18)
+                .put(Enemy.HIGH_JUMPER, 8)
+                .build()
+        );
+
+        private final Map<Enemy, Integer> enemies;
+
+        Match(Map<Enemy, Integer> enemies) {
+            this.enemies = enemies;
+        }
+
+        public Map<Enemy, Integer> getEnemies() {
+            return enemies;
+        }
+    }
+
     public static class Hit {
         private final Enemy enemy;
-        private final Weakness weakness;
+        private Weakness weakness;
 
         public Hit(Enemy enemy, Weakness weakness) {
             this.enemy = enemy;
@@ -114,15 +125,9 @@ public enum Match {
         public Weakness getWeakness() {
             return weakness;
         }
-    }
 
-    private final Map<Enemy, Integer> enemies;
-
-    Match(Map<Enemy, Integer> enemies) {
-        this.enemies = enemies;
-    }
-
-    public Map<Enemy, Integer> getEnemies() {
-        return enemies;
+        public void setWeakness(Weakness weakness) {
+            this.weakness = weakness;
+        }
     }
 }

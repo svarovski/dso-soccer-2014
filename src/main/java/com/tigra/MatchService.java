@@ -1,8 +1,6 @@
 package com.tigra;
 
 import javax.inject.Singleton;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,55 +9,69 @@ import java.util.logging.Logger;
 public class MatchService {
     private static final Logger LOG = Logger.getLogger(MatchService.class.getName());
 
-    public Match[] matchList() {
-        return Match.values();
+    public Soccer.Match[] matchList() {
+        return Soccer.Match.values();
     }
 
-    public Match match(String name) {
+    public Soccer.Match match(String name) {
         try {
-            return Match.valueOf(name);
+            return Soccer.Match.valueOf(name);
         } catch (IllegalArgumentException e) {
             LOG.log(Level.SEVERE, "Unknown match: " + name);
             return null;
         }
     }
 
-    public Match.Resource[] resourceList() {
-        return Match.Resource.values();
+    public Soccer.Resource[] resourceList() {
+        return Soccer.Resource.values();
     }
 
-    public Solution solve(Match match, Map<Match.Resource, Integer> condition) {
-        Solution solution = new Solution();
-        solution.addHit(new Match.Hit(Match.Enemy.DIVER, Match.Weakness.CORNER_KICK));
-        solution.addHit(new Match.Hit(Match.Enemy.DRIBBLE, Match.Weakness.HEAD_STRIKE));
-        solution.addHit(new Match.Hit(Match.Enemy.MAN_MARKING, Match.Weakness.PENALTY));
-        solution.addHit(new Match.Hit(Match.Enemy.MAN_MARKING, Match.Weakness.CORNER_KICK));
-        solution.addHit(new Match.Hit(Match.Enemy.ZONE_DEFENSE, Match.Weakness.HEAD_STRIKE));
-        solution.checkCondition(condition);
+    public Solution solve(Soccer.Match match, Map<Soccer.Resource, Integer> condition) {
+        Solution solution = new Solution(match, condition);
+        while(true) {
+            LOG.log(Level.INFO, "Attempting to adjust solution");
+            if(!adjustSolution(solution)) break;
+        }
         return solution;
     }
 
-    public Map<Match.Weakness, Integer> weaknessStats(List<Match.Hit> solution) {
-        Map<Match.Weakness, Integer> stats = new LinkedHashMap<Match.Weakness, Integer>();
-        for(Match.Hit hit : solution) {
-            Integer count = stats.get(hit.getWeakness());
-            stats.put(hit.getWeakness(), count == null ? 1 : count + 1);
+    private static class Decision {
+        private final int shortage;
+
+        public Decision(Solution solution) {
+            this.shortage = solution.getShortage();
         }
-        return stats;
+
+        public boolean isBetter(Solution solution) {
+            return shortage > solution.getShortage();
+        }
+
+        public String diffStr(Solution solution) {
+            return String.format("$d->%d", shortage, solution.getShortage());
+        }
     }
 
-    public Map<Match.Resource, Integer[]> resourceStats(Map<Match.Weakness, Integer> weaknessStats, Map<Match.Resource, Integer> condition) {
-        Map<Match.Resource, Integer[]> stats = new LinkedHashMap<Match.Resource, Integer[]>();
-        for(Map.Entry<Match.Weakness, Integer> entry : weaknessStats.entrySet()) {
-            for(Map.Entry<Match.Resource, Integer> recipePart : entry.getKey().getRecipe().entrySet()) {
-                Integer[] count = stats.get(recipePart.getKey());
-                if(count == null) count = new Integer[]{0, 0};
-                count[0] += recipePart.getValue() * entry.getValue();
-                count[1] = condition.get(recipePart.getKey()) - count[0];
-                stats.put(recipePart.getKey(), count);
+    private boolean adjustSolution(Solution solution) {
+        boolean adjusted = false;
+        for (int i = 0; i < solution.getHits().size(); i++) {
+            Decision decision = new Decision(solution);
+            Soccer.Hit hit = solution.getHits().get(i);
+            Soccer.Weakness weakness = hit.getWeakness();
+            Soccer.Weakness attempt = getOtherWeakness(hit.getEnemy(), weakness);
+            solution.changeHit(i, attempt);
+            if(decision.isBetter(solution)) {
+                LOG.log(Level.INFO, String.format("Changed %s: %s->%s (%s)",
+                        hit.getEnemy(), weakness, attempt, decision.diffStr(solution)));
+                adjusted = true;
+            }
+            else {
+                solution.changeHit(i, weakness);
             }
         }
-        return stats;
+        return adjusted;
     }
 
+    private Soccer.Weakness getOtherWeakness(Soccer.Enemy enemy, Soccer.Weakness weakness) {
+        return enemy.getWeaknesses().get(enemy.getWeaknesses().get(0).equals(weakness) ? 1 : 0);
+    }
 }

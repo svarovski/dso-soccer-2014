@@ -6,75 +6,95 @@ import java.util.List;
 import java.util.Map;
 
 public class Solution {
-    private final List<Match.Hit> hits = new ArrayList<Match.Hit>();
-    private final Map<Match.Enemy, Integer> enemyStats = new LinkedHashMap<Match.Enemy, Integer>();
-    private final Map<Match.Weakness, Integer> weaknessUsage = new LinkedHashMap<Match.Weakness, Integer>();
-    private final Map<Match.Resource, Integer> resourceUsage = new LinkedHashMap<Match.Resource, Integer>();
-    private final Map<Match.Resource, Integer> resourceRemainder = new LinkedHashMap<Match.Resource, Integer>();
+    private final List<Soccer.Hit> hits = new ArrayList<Soccer.Hit>();
+    private final Map<Soccer.Enemy, Integer> enemyStats = new LinkedHashMap<Soccer.Enemy, Integer>();
+    private final Map<Soccer.Weakness, Integer> weaknessUsage = new LinkedHashMap<Soccer.Weakness, Integer>();
+    private final Map<Soccer.Resource, Integer> resourceUsage = new LinkedHashMap<Soccer.Resource, Integer>();
+    private final Map<Soccer.Resource, Integer> resourceRemainder;
+    private int shortage = 0;
 
-    public Solution() {
-        for(Match.Resource resource : Match.Resource.values()) {
+    public Solution(Soccer.Match match, Map<Soccer.Resource, Integer> condition) {
+        this.resourceRemainder = new LinkedHashMap<Soccer.Resource, Integer>(condition);
+        for(Soccer.Resource resource : Soccer.Resource.values()) {
             resourceUsage.put(resource, 0);
+        }
+
+        for(Map.Entry<Soccer.Enemy, Integer> enemy : match.getEnemies().entrySet()) {
+            for (int i = 0; i < enemy.getValue(); i++) {
+                addHit(new Soccer.Hit(enemy.getKey(), enemy.getKey().getWeaknesses().get(0)));
+            }
         }
     }
 
-    public void addHit(Match.Hit hit) {
+    protected void addHit(Soccer.Hit hit) {
         hits.add(hit);
 
         add(enemyStats, hit.getEnemy(), 1);
-        final Match.Weakness weakness = hit.getWeakness();
+        final Soccer.Weakness weakness = hit.getWeakness();
         add(weaknessUsage, weakness, 1);
 
-        for(Map.Entry<Match.Resource, Integer> recipePart : weakness.getRecipe().entrySet()) {
+        for(Map.Entry<Soccer.Resource, Integer> recipePart : weakness.getRecipe().entrySet()) {
             add(resourceUsage, recipePart.getKey(), recipePart.getValue());
+            int result = sub(resourceRemainder, recipePart.getKey(), recipePart.getValue());
+            if(result < 0)
+                shortage += Math.min(-result, recipePart.getValue());
         }
     }
 
-    public static <T> void add(Map<T, Integer> map, T key, Integer delta) {
+    public void changeHit(int i, Soccer.Weakness weakness) {
+        final Soccer.Hit hit = hits.get(i);
+        Soccer.Weakness oldWeakness = hit.getWeakness();
+        hit.setWeakness(weakness);
+
+        sub(weaknessUsage, oldWeakness, 1);
+        add(weaknessUsage, weakness, 1);
+
+        for(Map.Entry<Soccer.Resource, Integer> recipePart : oldWeakness.getRecipe().entrySet()) {
+            sub(resourceUsage, recipePart.getKey(), recipePart.getValue());
+            int result = resourceRemainder.get(recipePart.getKey());
+            if(result < 0)
+                shortage -= Math.min(-result, recipePart.getValue());
+            add(resourceRemainder, recipePart.getKey(), recipePart.getValue());
+        }
+        for(Map.Entry<Soccer.Resource, Integer> recipePart : weakness.getRecipe().entrySet()) {
+            add(resourceUsage, recipePart.getKey(), recipePart.getValue());
+            int result = sub(resourceRemainder, recipePart.getKey(), recipePart.getValue());
+            if(result < 0)
+                shortage += Math.min(-result, recipePart.getValue());
+        }
+    }
+
+    public static <T> int add(Map<T, Integer> map, T key, Integer delta) {
         Integer count = map.get(key);
         if(count == null) count = 0;
-        map.put(key, count + delta);
-    }
-
-    public static <T> void sub(Map<T, Integer> map, T key, Integer delta) {
-        map.put(key, map.get(key) - delta);
-    }
-
-    public boolean isComplete(Match match) {
-        if(match.getEnemies().size() != enemyStats.size())
-            return false;
-        for(Match.Enemy enemy : match.getEnemies().keySet()) {
-            if(!match.getEnemies().get(enemy).equals(enemyStats.get(enemy)))
-                return false;
-        }
-        return true;
-    }
-
-    public int checkCondition(Map<Match.Resource, Integer> condition) {
-        int result = 0;
-        for(Map.Entry<Match.Resource, Integer> resource : resourceUsage.entrySet()) {
-            Integer remainder = condition.get(resource.getKey()) - resource.getValue();
-            resourceRemainder.put(resource.getKey(), remainder);
-            if(remainder < 0)
-                result += remainder;
-        }
-
+        final int result = count + delta;
+        map.put(key, result);
         return result;
     }
 
-    public List<Match.Hit> getHits() {
+    public static <T> int sub(Map<T, Integer> map, T key, Integer delta) {
+        final int result = map.get(key) - delta;
+        map.put(key, result);
+        return result;
+    }
+
+    public List<Soccer.Hit> getHits() {
         return hits;
     }
 
-    public Map<Match.Weakness, Integer> getWeaknessUsage() {
+    public Map<Soccer.Weakness, Integer> getWeaknessUsage() {
         return weaknessUsage;
     }
 
-    public Map<Match.Resource, Integer> getResourceUsage() {
+    public Map<Soccer.Resource, Integer> getResourceUsage() {
         return resourceUsage;
     }
 
-    public Map<Match.Resource, Integer> getResourceRemainder() {
+    public Map<Soccer.Resource, Integer> getResourceRemainder() {
         return resourceRemainder;
+    }
+
+    public int getShortage() {
+        return shortage;
     }
 }
