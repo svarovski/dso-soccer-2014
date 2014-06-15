@@ -18,7 +18,7 @@ $(document).ready(function() {
         $.get("/match/links", function(data) {
             $entities.find("tr[data-entity]").on("mouseover", function(e) {
                 $entities.find("tr.highlight").removeClass("highlight");
-                $(this).addClass("highlight");
+                $entities.find("tr[data-entity="+$(this).attr("data-entity")+"]").addClass("highlight");
                 $.each(data[$(this).attr("data-entity")], function(i, o) {
                     $entities.find("tr[data-entity="+o+"]").addClass("highlight");
                 });

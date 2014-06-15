@@ -102,7 +102,7 @@
                                 <th><fmt:message key="message.weakness"/></th>
                             </tr>
                             <c:forEach items="${it.solution.hits}" var="hit">
-                                <tr data-entity="${hit.enemy}">
+                                <tr data-entity="${hit.weakness}">
                                     <td><fmt:message key="name.${hit.enemy}"/></td>
                                     <td><fmt:message key="name.${hit.weakness}"/></td>
                                 </tr>
@@ -121,10 +121,12 @@
                                 <th><fmt:message key="message.amount"/></th>
                             </tr>
                             <c:forEach items="${it.solution.weaknessUsage}" var="weakness">
-                                <tr data-entity="${weakness.key}">
-                                    <td><fmt:message key="name.${weakness.key}"/></td>
-                                    <td><span class="pull-right">${weakness.value}</span></td>
-                                </tr>
+                                <c:if test="${weakness.value > 0}">
+                                    <tr data-entity="${weakness.key}">
+                                        <td><fmt:message key="name.${weakness.key}"/></td>
+                                        <td><span class="pull-right">${weakness.value}</span></td>
+                                    </tr>
+                                </c:if>
                             </c:forEach>
                         </table>
                     </div>

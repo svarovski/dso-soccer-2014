@@ -78,6 +78,29 @@ public class Solution {
         return result;
     }
 
+    public double getWeight(Map<Soccer.Resource, Integer> condition) {
+        Map<Soccer.Resource, Double> percents = new EnumMap<Soccer.Resource, Double>(Soccer.Resource.class);
+        double average = 0;
+        for(Soccer.Resource resource : condition.keySet()) {
+            final double percent = resourcePercent(resource, condition);
+            average += percent;
+            percents.put(resource, percent);
+        }
+        average /= Soccer.Resource.values().length;
+
+        double weight = 0;
+        for(Soccer.Resource resource : percents.keySet()) {
+            final double dev = percents.get(resource) - average;
+            weight += dev*dev;
+        }
+        return Math.sqrt(weight);
+    }
+
+    private double resourcePercent(Soccer.Resource resource, Map<Soccer.Resource, Integer> condition) {
+        return resourceRemainder.get(resource) >= 0 && condition.get(resource) > 0
+                ? (double) resourceUsage.get(resource) / condition.get(resource) : 1.0;
+    }
+
     public List<Soccer.Hit> getHits() {
         return hits;
     }
