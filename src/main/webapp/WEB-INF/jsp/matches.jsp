@@ -69,7 +69,7 @@
             <c:if test="${not empty it.resources}">
                 <div class="row margin-top-20">
                     <div class="col-xs-12">
-                        <form role="form" method="POST" action="${it.root}/${it.match}">
+                        <form role="form" id="condition" method="POST" action="${it.root}/${it.match}">
                             <c:forEach items="${it.resources}" var="resource" varStatus="status">
                                 <div class="form-group col-xs-2">
                                     <label for="res_${status.count}"><fmt:message key="name.${resource}"/>:</label>
@@ -144,10 +144,17 @@
                                 <tr>
                                     <td><fmt:message key="name.${resource.key}"/></td>
                                     <td><span class="pull-right">${resource.value}</span></td>
-                                    <td><span class="pull-right">${it.solution.resourceRemainder[resource.key]}</span></td>
+                                    <td><span class="pull-right remainder">
+                                        ${it.solution.resourceRemainder[resource.key]}
+                                    </span></td>
                                 </tr>
                             </c:forEach>
                         </table>
+                        <div class="margin-top-20">
+                            <button id="save_remainder" type="button" class="btn btn-block btn-info">
+                                <fmt:message key="message.save_remainder"/>
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -182,5 +189,7 @@
 
     <%-- JQUERY --%>
     <script src="/static/jquery-1.11.1.min.js"></script>
+    <script src="/static/jquery.cookie.js"></script>
+    <script src="/static/app.js"></script>
 </body>
 </html>

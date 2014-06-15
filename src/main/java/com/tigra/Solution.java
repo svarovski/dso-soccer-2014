@@ -12,6 +12,12 @@ public class Solution {
     private final Map<Match.Resource, Integer> resourceUsage = new LinkedHashMap<Match.Resource, Integer>();
     private final Map<Match.Resource, Integer> resourceRemainder = new LinkedHashMap<Match.Resource, Integer>();
 
+    public Solution() {
+        for(Match.Resource resource : Match.Resource.values()) {
+            resourceUsage.put(resource, 0);
+        }
+    }
+
     public void addHit(Match.Hit hit) {
         hits.add(hit);
 
