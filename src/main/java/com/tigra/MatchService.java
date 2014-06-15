@@ -27,7 +27,14 @@ public class MatchService {
     }
 
     public Solution solve(Soccer.Match match, Map<Soccer.Resource, Integer> condition) {
-        Solution solution = new Solution(match, condition);
+        Solution solution0 = getSolution(match, condition, 0);
+        Solution solution1 = getSolution(match, condition, 1);
+        return new Decision(solution0).isBetter(solution1) ? solution1 : solution0;
+    }
+
+    private Solution getSolution(Soccer.Match match, Map<Soccer.Resource, Integer> condition, int start) {
+        LOG.log(Level.INFO, "Building solution " + start);
+        Solution solution = new Solution(match, condition, start);
         while(true) {
             LOG.log(Level.INFO, "Attempting to adjust solution");
             if(!adjustSolution(solution)) break;
@@ -47,7 +54,7 @@ public class MatchService {
         }
 
         public String diffStr(Solution solution) {
-            return String.format("$d->%d", shortage, solution.getShortage());
+            return String.format("%d->%d", shortage, solution.getShortage());
         }
     }
 

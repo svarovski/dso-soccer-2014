@@ -2,16 +2,20 @@
     margin-top: 20px;
 }
 
-th {
+table.entity_list th {
     text-align: center;
 }
 
-table {
+table.entity_list {
     border: #357ebd solid 2px;
     width: 100%;
 }
 
-th, td {
+table.entity_list th, table.entity_list td {
     padding: 3px 10px;
     border: #3c763d solid 1px;
+}
+
+.highlight {
+    background-color: #dadada;
 }

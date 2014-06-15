@@ -4,14 +4,12 @@ import com.sun.jersey.api.view.Viewable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,8 +30,14 @@ public class MatchResource {
 
     @GET
     public Response list() {
-        LOG.info("match list requested");
+        LOG.info("Match list requested");
         return Response.ok(new Viewable("/matches", model("matches", service.matchList()))).build();
+    }
+
+    @GET @Path("links") @Produces(MediaType.APPLICATION_JSON)
+    public Response links() {
+        LOG.info("Entity links requested");
+        return Response.ok(Soccer.entityLinks, MediaType.APPLICATION_JSON).build();
     }
 
     @GET @Path("{matchName}")
@@ -72,7 +76,7 @@ public class MatchResource {
     }
 
     private Map<Soccer.Resource, Integer> formToCondition(MultivaluedMap<String, String> form) {
-        Map<Soccer.Resource, Integer> condition = new LinkedHashMap<Soccer.Resource, Integer>();
+        Map<Soccer.Resource, Integer> condition = new EnumMap<Soccer.Resource, Integer>(Soccer.Resource.class);
         for(Soccer.Resource resource : Soccer.Resource.values()) {
             final String value = form.getFirst(resource.toString());
             try {

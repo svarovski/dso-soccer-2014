@@ -2,17 +2,17 @@ package com.tigra;
 
 import com.google.common.collect.ImmutableMap;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Soccer {
-    public enum Resource {
+    public interface Entity {}
+
+    public enum Resource implements Entity {
         BOOTS, BANANA, SHOULDER, THORNS, HELMET, HOOKED_BALL, RED_COLOR, SPYGLASS, WET_GRASS, FIST, GREASE, CORNER, SPRING,
         ADVANCED_PAPER
     }
 
-    public enum Weakness {
+    public enum Weakness implements Entity {
         TACKLE(ImmutableMap.<Resource, Integer>builder().put(Resource.SHOULDER, 13).put(Resource.FIST, 6).build()),
         RED_CARD(ImmutableMap.<Resource, Integer>builder().put(Resource.ADVANCED_PAPER, 5).put(Resource.RED_COLOR, 5).build()),
         FOUL(ImmutableMap.<Resource, Integer>builder().put(Resource.BANANA, 7).put(Resource.WET_GRASS, 9).build()),
@@ -34,7 +34,7 @@ public class Soccer {
         }
     }
 
-    public enum Enemy {
+    public enum Enemy implements Entity {
         DIVER(Arrays.asList(Weakness.RED_CARD, Weakness.FOUL)),
         DRIBBLE(Arrays.asList(Weakness.TACKLE, Weakness.FOUL)),
         BACK_HEEL(Arrays.asList(Weakness.SLIDING_TACKLE, Weakness.TACKLE)),
@@ -55,7 +55,7 @@ public class Soccer {
         }
     }
 
-    public enum Match {
+    public enum Match implements Entity {
         TRAINING(ImmutableMap.<Enemy, Integer>builder()
                 .put(Enemy.DIVER, 2)
                 .put(Enemy.DRIBBLE, 3)
@@ -129,5 +129,33 @@ public class Soccer {
         public void setWeakness(Weakness weakness) {
             this.weakness = weakness;
         }
+    }
+
+    public static final Map<Entity, List<Entity>> entityLinks;
+    static {
+        Map<Entity, List<Entity>> linkBuilder = new LinkedHashMap<Entity, List<Entity>>();
+        for(Entity[] entities : new Entity[][]{Resource.values(), Weakness.values(), Enemy.values()}) {
+            for(Entity entity : entities) {
+                linkBuilder.put(entity, new ArrayList<Entity>());
+            }
+        }
+
+        // Weakness <-> Resource
+        for(Weakness weakness : Weakness.values()) {
+            for(Resource resource : weakness.getRecipe().keySet()) {
+                linkBuilder.get(resource).add(weakness);
+                linkBuilder.get(weakness).add(resource);
+            }
+        }
+
+        // Weakness <-> Enemy
+        for(Enemy enemy : Enemy.values()) {
+            linkBuilder.get(enemy).addAll(enemy.getWeaknesses());
+            for(Weakness weakness : enemy.getWeaknesses()) {
+                linkBuilder.get(weakness).add(enemy);
+            }
+        }
+
+        entityLinks = ImmutableMap.copyOf(linkBuilder);
     }
 }

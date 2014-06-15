@@ -93,7 +93,7 @@
                 <div class="row margin-top-20">
                     <%-- Solution --%>
                     <div class="col-md-4 col-xs-1">
-                        <table>
+                        <table class="entity_list">
                             <tr>
                                 <th colspan=2><fmt:message key="message.solution"/></th>
                             </tr>
@@ -102,7 +102,7 @@
                                 <th><fmt:message key="message.weakness"/></th>
                             </tr>
                             <c:forEach items="${it.solution.hits}" var="hit">
-                                <tr>
+                                <tr data-entity="${hit.enemy}">
                                     <td><fmt:message key="name.${hit.enemy}"/></td>
                                     <td><fmt:message key="name.${hit.weakness}"/></td>
                                 </tr>
@@ -112,7 +112,7 @@
 
                     <%-- Weakness stats --%>
                     <div class="col-md-4 col-xs-1">
-                        <table>
+                        <table class="entity_list">
                             <tr>
                                 <th colspan=2><fmt:message key="message.weakness_stats"/></th>
                             </tr>
@@ -121,7 +121,7 @@
                                 <th><fmt:message key="message.amount"/></th>
                             </tr>
                             <c:forEach items="${it.solution.weaknessUsage}" var="weakness">
-                                <tr>
+                                <tr data-entity="${weakness.key}">
                                     <td><fmt:message key="name.${weakness.key}"/></td>
                                     <td><span class="pull-right">${weakness.value}</span></td>
                                 </tr>
@@ -131,7 +131,7 @@
 
                     <%-- Resource stats --%>
                     <div class="col-md-4 col-xs-1">
-                        <table>
+                        <table class="entity_list">
                             <tr>
                                 <th colspan=3><fmt:message key="message.resource_stats"/></th>
                             </tr>
@@ -141,7 +141,7 @@
                                 <th><fmt:message key="message.remainder"/></th>
                             </tr>
                             <c:forEach items="${it.solution.resourceUsage}" var="resource">
-                                <tr>
+                                <tr data-entity="${resource.key}">
                                     <td><fmt:message key="name.${resource.key}"/></td>
                                     <td><span class="pull-right">${resource.value}</span></td>
                                     <td><span class="pull-right remainder">
@@ -150,7 +150,8 @@
                                 </tr>
                             </c:forEach>
                             <tr>
-                                <td colspan=3><span class="pull-right">${it.solution.shortage}</span></td>
+                                <th colspan=2><fmt:message key="message.shortage"/></th>
+                                <th><span class="pull-right">${it.solution.shortage}</span></th>
                             </tr>
                         </table>
                         <div class="margin-top-20">

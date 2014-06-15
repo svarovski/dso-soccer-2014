@@ -1,27 +1,27 @@
 package com.tigra;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
 public class Solution {
     private final List<Soccer.Hit> hits = new ArrayList<Soccer.Hit>();
-    private final Map<Soccer.Enemy, Integer> enemyStats = new LinkedHashMap<Soccer.Enemy, Integer>();
-    private final Map<Soccer.Weakness, Integer> weaknessUsage = new LinkedHashMap<Soccer.Weakness, Integer>();
-    private final Map<Soccer.Resource, Integer> resourceUsage = new LinkedHashMap<Soccer.Resource, Integer>();
+    private final Map<Soccer.Enemy, Integer> enemyStats = new EnumMap<Soccer.Enemy, Integer>(Soccer.Enemy.class);
+    private final Map<Soccer.Weakness, Integer> weaknessUsage = new EnumMap<Soccer.Weakness, Integer>(Soccer.Weakness.class);
+    private final Map<Soccer.Resource, Integer> resourceUsage = new EnumMap<Soccer.Resource, Integer>(Soccer.Resource.class);
     private final Map<Soccer.Resource, Integer> resourceRemainder;
     private int shortage = 0;
 
-    public Solution(Soccer.Match match, Map<Soccer.Resource, Integer> condition) {
-        this.resourceRemainder = new LinkedHashMap<Soccer.Resource, Integer>(condition);
+    public Solution(Soccer.Match match, Map<Soccer.Resource, Integer> condition, int start) {
+        this.resourceRemainder = new EnumMap<Soccer.Resource, Integer>(condition);
         for(Soccer.Resource resource : Soccer.Resource.values()) {
             resourceUsage.put(resource, 0);
         }
 
         for(Map.Entry<Soccer.Enemy, Integer> enemy : match.getEnemies().entrySet()) {
             for (int i = 0; i < enemy.getValue(); i++) {
-                addHit(new Soccer.Hit(enemy.getKey(), enemy.getKey().getWeaknesses().get(0)));
+                addHit(new Soccer.Hit(enemy.getKey(), enemy.getKey().getWeaknesses().get(start)));
             }
         }
     }
