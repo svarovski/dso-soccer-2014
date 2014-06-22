@@ -35,13 +35,21 @@ public class Soccer {
     }
 
     public enum Enemy implements Entity {
+        // Schwalbenkonig
         DIVER(Arrays.asList(Weakness.RED_CARD, Weakness.FOUL)),
+        // Dribbelkunstler
         DRIBBLE(Arrays.asList(Weakness.TACKLE, Weakness.FOUL)),
+        // Hackentrick
         BACK_HEEL(Arrays.asList(Weakness.SLIDING_TACKLE, Weakness.TACKLE)),
+        // Manndeckung
         MAN_MARKING(Arrays.asList(Weakness.FOUL, Weakness.HEAD_STRIKE)),
+        // Reaktionsstark
         FAST_REFLEXES(Arrays.asList(Weakness.BICYCLE_KICK, Weakness.PENALTY)),
+        // Scheller Laufer
         FAST_RUNNER(Arrays.asList(Weakness.SLIDING_TACKLE, Weakness.PASS)),
-        ZONE_DEFENSE(Arrays.asList(Weakness.HEAD_STRIKE, Weakness.PASS)),
+        // Raumdeckung
+        ZONE_DEFENSE(Arrays.asList(Weakness.CORNER_KICK, Weakness.PASS)),
+        // Guter Springer
         HIGH_JUMPER(Arrays.asList(Weakness.HEAD_STRIKE, Weakness.PENALTY));
 
         private final List<Weakness> weaknesses;
@@ -72,20 +80,48 @@ public class Soccer {
                 .put(Enemy.HIGH_JUMPER, 1)
                 .build()
         ),
-        MATCH_LAST(null),
-        EIGHT_FINAL(null),
+        MATCH_LAST(ImmutableMap.<Enemy, Integer>builder()
+                .put(Enemy.DIVER, 2)
+                .put(Enemy.DRIBBLE, 4)
+                .put(Enemy.BACK_HEEL, 1)
+                .put(Enemy.MAN_MARKING, 3)
+                .put(Enemy.FAST_RUNNER, 3)
+                .put(Enemy.ZONE_DEFENSE, 4)
+                .put(Enemy.HIGH_JUMPER, 4)
+                .build()
+        ),
+        EIGHT_FINAL(ImmutableMap.<Enemy, Integer>builder()
+                .put(Enemy.DIVER, 7)
+                .put(Enemy.DRIBBLE, 8)
+                .put(Enemy.MAN_MARKING, 2)
+                .put(Enemy.FAST_REFLEXES, 4)
+                .put(Enemy.FAST_RUNNER, 3)
+                .put(Enemy.ZONE_DEFENSE, 7)
+                .put(Enemy.HIGH_JUMPER, 5)
+                .build()
+        ),
         FOURTH_FINAL(ImmutableMap.<Enemy, Integer>builder()
                 .put(Enemy.DIVER, 8)
                 .put(Enemy.DRIBBLE, 4)
                 .put(Enemy.BACK_HEEL, 4)
-                .put(Enemy.MAN_MARKING, 8)
+                .put(Enemy.MAN_MARKING, 16)
                 .put(Enemy.FAST_REFLEXES, 6)
                 .put(Enemy.FAST_RUNNER, 4)
-                .put(Enemy.ZONE_DEFENSE, 12)
+                .put(Enemy.ZONE_DEFENSE, 4)
                 .put(Enemy.HIGH_JUMPER, 4)
                 .build()
         ),
-        HALF_FINAL(null),
+        HALF_FINAL(ImmutableMap.<Enemy, Integer>builder()
+                .put(Enemy.DIVER, 5)
+                .put(Enemy.DRIBBLE, 14)
+                .put(Enemy.BACK_HEEL, 9)
+                .put(Enemy.MAN_MARKING, 5)
+                .put(Enemy.FAST_REFLEXES, 10)
+                .put(Enemy.FAST_RUNNER, 3)
+                .put(Enemy.ZONE_DEFENSE, 4)
+                .put(Enemy.HIGH_JUMPER, 8)
+                .build()
+        ),
         FINAL(ImmutableMap.<Enemy, Integer>builder()
                 .put(Enemy.DIVER, 10)
                 .put(Enemy.DRIBBLE, 10)
