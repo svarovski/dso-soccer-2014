@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <display-name>DSO Soccer 2014</display-name>
+    <display-name>DSO Soccer 2016</display-name>
 
-    <description>The Settlers Online soccer event 2014 adventures calculator</description>
+    <description>The Settlers Online soccer event 2016 adventures calculator</description>
 
     <listener>
         <listener-class>com.tigra.GuiceConfig</listener-class>

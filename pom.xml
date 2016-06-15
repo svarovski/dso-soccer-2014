@@ -5,11 +5,11 @@
     <packaging>war</packaging>
     <version>1.0</version>
     <groupId>com.tigra</groupId>
-    <artifactId>dso-soccer-2014</artifactId>
+    <artifactId>dso-soccer-2016</artifactId>
 
     <properties>
         <guice.version>3.0</guice.version>
-        <appengine.target.version>1.8.9</appengine.target.version>
+        <appengine.target.version>1.9.38</appengine.target.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -20,7 +20,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <appengine.app.id>dso-soccer-2014</appengine.app.id>
+                <appengine.app.id>dso-soccer-2016</appengine.app.id>
                 <appengine.app.version>1</appengine.app.version>
             </properties>
         </profile>
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>14.0</version>
+            <version>18.0</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -108,7 +108,8 @@
     </dependencies>
 
     <build>
-        <directory>${target.directory}</directory>
+        <!--<directory>${target.directory}</directory>-->
+        <directory>target</directory>
 
         <plugins>
             <plugin>

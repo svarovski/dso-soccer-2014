@@ -13,10 +13,10 @@
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="The Settlers Online soccer event 2014 adventure helper">
+    <meta name="description" content="The Settlers Online soccer event 2016 adventure helper">
     <meta name="author" content="GS">
 
-    <title>DSO Soccer 2014</title>
+    <title>DSO Soccer 2016</title>
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/app.css" />
 </head>
