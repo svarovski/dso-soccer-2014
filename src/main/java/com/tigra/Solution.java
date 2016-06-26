@@ -1,9 +1,6 @@
 package com.tigra;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Solution {
     private final List<Soccer.Hit> hits = new ArrayList<Soccer.Hit>();
@@ -103,6 +100,15 @@ public class Solution {
 
     public List<Soccer.Hit> getHits() {
         return hits;
+    }
+
+    public Map<Soccer.Hit, Integer> getHitsSummed() {
+        final LinkedHashMap<Soccer.Hit, Integer> hitsSummed = new LinkedHashMap<Soccer.Hit, Integer>();
+        for (Soccer.Hit hit : hits) {
+            final Integer value = hitsSummed.get(hit);
+            hitsSummed.put(hit, value == null ? 1 : value + 1);
+        }
+        return hitsSummed;
     }
 
     public Map<Soccer.Weakness, Integer> getWeaknessUsage() {

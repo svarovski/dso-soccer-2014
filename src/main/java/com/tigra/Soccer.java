@@ -145,6 +145,19 @@ public class Soccer {
         public void setWeakness(Weakness weakness) {
             this.weakness = weakness;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Hit hit = (Hit) o;
+            return enemy == hit.enemy && weakness == hit.weakness;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(enemy, weakness);
+        }
     }
 
     public static final Map<Entity, List<Entity>> entityLinks;

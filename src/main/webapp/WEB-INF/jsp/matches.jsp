@@ -95,16 +95,18 @@
                     <div class="col-md-4 col-xs-1">
                         <table class="entity_list">
                             <tr>
-                                <th colspan=2><fmt:message key="message.solution"/></th>
+                                <th colspan=3><fmt:message key="message.solution"/></th>
                             </tr>
                             <tr>
                                 <th><fmt:message key="message.enemy"/></th>
                                 <th><fmt:message key="message.weakness"/></th>
+                                <th>&nbsp;</th>
                             </tr>
-                            <c:forEach items="${it.solution.hits}" var="hit">
-                                <tr data-entity="${hit.weakness}">
-                                    <td><fmt:message key="name.${hit.enemy}"/></td>
-                                    <td><fmt:message key="name.${hit.weakness}"/></td>
+                            <c:forEach items="${it.solution.hitsSummed}" var="hit">
+                                <tr data-entity="${hit.key.weakness}">
+                                    <td><fmt:message key="name.${hit.key.enemy}"/></td>
+                                    <td><fmt:message key="name.${hit.key.weakness}"/></td>
+                                    <td><span class="pull-right">${hit.value}</span></td>
                                 </tr>
                             </c:forEach>
                         </table>
